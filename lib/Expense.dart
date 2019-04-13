@@ -1,4 +1,8 @@
+import 'dart:async';
+
+import 'package:event/services/services.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Expense extends StatefulWidget {
   @override
@@ -6,6 +10,34 @@ class Expense extends StatefulWidget {
 }
 
 class _ExpenseState extends State<Expense> {
+  var flag = 0;
+  var deletedItem;
+  QuerySnapshot expenditure;
+  // StreamSubscription<DocumentSnapshot> subscription;
+  CrudServices services = CrudServices();
+  // final DocumentReference documentReference = Firestore.instance.document('Expenditure');
+  @override
+  void initState() {
+    _fetch();
+    super.initState();
+  }
+
+  Future _fetch() async {
+    await services.getData('Expenditure').then((result) {
+      // expenditure = result;
+      // if (expenditure.documents.length > 0) {
+        setState(() {
+          expenditure = result;
+        });
+      // }
+    });
+  }
+  // @override
+  // void dispose() {
+  //   subscription?.cancel();
+  //   super.dispose();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -44,63 +76,99 @@ class _ExpenseState extends State<Expense> {
               ),
             ],
           ),
-          Expanded(
-              flex: 1,
-              child: Container(
-                  child: ListView.builder(
-                      itemCount: 1,
-                      itemBuilder: (BuildContext context, int item) {
-                        return Card(
-                          margin: EdgeInsets.only(top: 12.0, bottom: 2.0),
-                          child: ListTile(
-                            title: Row(
-                              children: <Widget>[
-                                Expanded(
-                                  child: Text(
-                                    'oil',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 15.0),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    '12-02-2019',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 15.0),
-                                  ),
-                                  flex: 2,
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    '5000',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 15.0),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    child: Icon(Icons.description),
-                                     onTap: (){_showDescription();},
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      }))),
+          Expanded(flex: 1, child: Container(child: _data())),
         ],
       ),
     );
   }
 
-  _showDescription() {
-    AlertDialog alertDialog =AlertDialog(
-      title: Text('Description' , style: TextStyle(fontSize: 15.0),),
-      content: Text("Description of selected value"),
+  Widget _data() {
+    if (expenditure != null) {
+      return ListView.builder(
+          itemCount: expenditure.documents.length == null
+              ? 0
+              : expenditure.documents.length,
+          itemBuilder: (BuildContext context, int item) {
+            return Card(
+              margin: EdgeInsets.only(top: 12.0, bottom: 2.0),
+              child: ListTile(
+                title: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        expenditure.documents[item].data['name'],
+                        style: TextStyle(color: Colors.black, fontSize: 15.0),
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        expenditure.documents[item].data['date'].toString() + '-' + expenditure.documents[item].data['month'] + '-' + expenditure.documents[item].data['year'],
+                        style: TextStyle(color: Colors.black, fontSize: 15.0),
+                      ),
+                      flex: 2,
+                    ),
+                    Expanded(
+                      child: Text(
+                        expenditure.documents[item].data['amount'],
+                        style: TextStyle(color: Colors.black, fontSize: 15.0),
+                      ),
+                    ),
+                    Expanded(
+                      child: GestureDetector(
+                        child: Icon(Icons.description),
+                        onTap: () {
+                          _showDescription(item);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                onLongPress: () {
+                   services.delete('Expenditure', expenditure.documents[item].documentID);
+                  AlertDialog alertDialog = AlertDialog(
+                          title: Text("Item Deleted"),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: Text("OK"),
+                              onPressed: () {
+                                _fetch();
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        );
+                    showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (context) => alertDialog
+                    );
+                },
+              ),
+            );
+          });
+    } else {
+      return Center(
+        child: Text("Please wait ... ", style: TextStyle(fontSize: 20.0)),
+      );
+    }
+  }
+
+  _showDescription(int item) {
+    AlertDialog alertDialog = AlertDialog(
+      title: Text(
+        'Description',
+        style: TextStyle(fontSize: 15.0),
+      ),
+      content: Text(
+        expenditure.documents[item].data['description'],
+      ),
+      actions: <Widget>[
+        FlatButton(
+          child: Text('OK'),
+          onPressed: () => Navigator.of(context).pop(),
+        )
+      ],
     );
-    showDialog(
-      context: context,
-      builder: (context) => alertDialog
-    );
+    showDialog(context: context, builder: (context) => alertDialog);
   }
 }

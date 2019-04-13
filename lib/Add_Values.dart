@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
+import 'services/services.dart';
 
 class AddDetails extends StatefulWidget {
   @override
@@ -9,6 +10,7 @@ class AddDetails extends StatefulWidget {
 
 class _AddDetailsState extends State<AddDetails> {
   var _key = GlobalKey<FormState>();
+  CrudServices crudService = CrudServices();
   TextEditingController _name = TextEditingController();
   TextEditingController _date = TextEditingController();
   TextEditingController _amount = TextEditingController();
@@ -29,6 +31,8 @@ class _AddDetailsState extends State<AddDetails> {
     _selected = _option[0];
     super.initState();
   }
+
+  var _res;
 // @override
 // void dispose() {
 //     _name.dispose();
@@ -99,7 +103,6 @@ class _AddDetailsState extends State<AddDetails> {
                 padding: EdgeInsets.all(5.0),
                 child: DateTimePickerFormField(
                   controller: _date,
-                  initialDate: DateTime.now(),
                   inputType: inputType,
                   format: formats[inputType],
                   editable: editable,
@@ -168,7 +171,16 @@ class _AddDetailsState extends State<AddDetails> {
                                   backgroundColor: Colors.lightGreen,
                                   title: Text('Successfull'),
                                   actions: <Widget>[
-                                    Text('OK'),
+                                    FlatButton(
+                                      child: Text("OK"), 
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        _res = _date.text.split('-');
+                                        Map<String,dynamic> data = {'choice' : _selected, 'name':_name.text,'date': _res[2],'month' : _res[1],'year' : _res[0],'amount':_amount.text,'description':_description.text};
+                                        crudService.addData(data).catchError((e) => SnackBar(content: e,));
+                                      },
+
+                                    )
                                   ],
                                 );
                                 showDialog(
