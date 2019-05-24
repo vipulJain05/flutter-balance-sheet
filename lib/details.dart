@@ -47,7 +47,6 @@ class _SignInState extends State<SignIn> {
 // NoSuchMethodError (NoSuchMethodError: The method 'signout' was called on null. Receiver: null Tried calling: signout()) in flutter
 
   void signout() {
-    print("jflgkdl");
     // _firebaseAuth.signOut();
     _googleSignIn.signOut();
     // preferences.clear();
@@ -55,19 +54,21 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      fit: StackFit.expand,
-      children: <Widget>[
-        Container(
-          color: Colors.lightBlue,
-          child: RaisedButton(
-            child: Text("SignIn"),
-            onPressed: () {
-              _signIn();
-            },
+    return Scaffold(
+          body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          Container(
+            child: RaisedButton(
+              color: Colors.black,
+              child: Text(" Click To SignIn",style: TextStyle(fontSize: 40.0,color: Colors.white)),
+              onPressed: () {
+                _signIn();
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

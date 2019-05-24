@@ -31,8 +31,7 @@ class _RevenueState extends State<Revenue> {
     return Container(
         margin: EdgeInsets.only(top: 20.0),
         child:
-            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <
-                Widget>[
+            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
           Row(
             children: <Widget>[
               Expanded(

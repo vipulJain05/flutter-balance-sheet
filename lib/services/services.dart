@@ -58,7 +58,6 @@ class CrudServices {
     var revenueCount = 0;
     var expenditureCount = 0;
     var _profit;
-
     QuerySnapshot _revenue = await Firestore.instance
         .collection('$_email')
         .document('data')
@@ -67,14 +66,21 @@ class CrudServices {
     // for (var totalRevenue in _revenue.documents) {
     //   revenueCount += int.parse(totalRevenue.data['amount']);
     // }
-
-    for (int i = 0; i < 12; i++) {
-      for (int j = 0; i != _revenue.documents[j].data['month']; j++) {
-        revenueCount += int.parse(_revenue.documents[j].data['amount']);
+var k= 0;
+    for (int i = 1; i < 12; i++) {
+      revenueCount = 0;
+      for (int j = 0;j < _revenue.documents.length; j++) {
+        if(int.parse(_revenue.documents[j].data['month']) == i){
+          revenueCount += int.parse(_revenue.documents[j].data['amount']);
+        } else {
+          continue;
+        }
       }
+      if(revenueCount != 0) {
+        // arr[][]
+      }
+      print("hsdkjhakj  $i  $revenueCount  $k");
     }
-
-    print(revenueCount);
     QuerySnapshot _expenditure = await Firestore.instance
         .collection('$_email')
         .document('data')
