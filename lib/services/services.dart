@@ -43,7 +43,6 @@ class CrudServices {
       }
 
       if (check.isEmpty) {
-        print("hjdskfl");
         await Firestore.instance
             .collection('$_email')
             .document('data')
@@ -52,7 +51,6 @@ class CrudServices {
             .collection('$month')
             .add(_data);
       } else {
-        print("test");
         QuerySnapshot _updateData;
         await Firestore.instance
             .collection('$_email')
