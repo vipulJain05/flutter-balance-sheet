@@ -115,7 +115,6 @@ QuerySnapshot expenseMonthTotal;
       }
 
       if (check.isEmpty) {
-        print("hjdskfl");
         await Firestore.instance
             .collection('$_email')
             .document('data')
@@ -124,7 +123,6 @@ QuerySnapshot expenseMonthTotal;
             .collection('$month')
             .add(_data);
       } else {
-        print("test");
         QuerySnapshot _updateData;
         await Firestore.instance
             .collection('$_email')
@@ -182,56 +180,5 @@ QuerySnapshot expenseMonthTotal;
         .document(docId)
         .delete()
         .catchError((err) => print(err));
-    // if(Firestore.instance.collection('$_email').document().)
   }
-
-  Future profitLoss() async {
-    var _email = await getPreference();
-    var revenueCount = 0;
-    var expenditureCount = 0;
-    var _profit;
-    QuerySnapshot _revenue = await Firestore.instance
-        .collection('$_email')
-        .document('data')
-        .collection('Revenue')
-        .getDocuments();
-    // for (var totalRevenue in _revenue.documents) {
-    //   revenueCount += int.parse(totalRevenue.data['amount']);
-    // }
-    var k = 0;
-    for (int i = 1; i < 12; i++) {
-      revenueCount = 0;
-      for (int j = 0; j < _revenue.documents.length; j++) {
-        if (int.parse(_revenue.documents[j].data['month']) == i) {
-          revenueCount += int.parse(_revenue.documents[j].data['amount']);
-        } else {
-          continue;
-        }
-      }
-      if (revenueCount != 0) {
-        // arr[][]
-      }
-      print("hsdkjhakj  $i  $revenueCount  $k");
-    }
-    QuerySnapshot _expenditure = await Firestore.instance
-        .collection('$_email')
-        .document('data')
-        .collection('Expenditure')
-        .getDocuments();
-    // for (var totalExpenditure in _expenditure.documents) {
-    //   expenditureCount += int.parse(totalExpenditure.data['amount']);
-    // }
-    // _profit = revenueCount - expenditureCount;
-    // //profitLoss.revenue = revenueCount;
-    // Map<String,dynamic> profitLoss = {'Revenue' : revenueCount,'Expenditure' : expenditureCount,'Profit' : _profit};
-    // profitLoss['expenditure'] = expenditureCount;
-    // profitLoss['profit'] = _profit;
-    // print("sjdlkajkldjkslajlkaskl;f" + _revenue.documents[0].data['amount'].toString());
-    // return _revenue;
-  }
-
-  // Future _profitLossYearWise() async{
-  //   var _email = getPreference();
-  //   await Firestore.instance.
-  // }
 }
