@@ -175,9 +175,10 @@ class _AddDetailsState extends State<AddDetails> {
                                       child: Text("OK"), 
                                       onPressed: () {
                                         Navigator.pop(context);
-                                        _res = _date.text.split('-');
-                                        Map<String,dynamic> data = {'choice' : _selected, 'name':_name.text,'date': _res[2],'month' : _res[1],'year' : _res[0],'amount':_amount.text,'description':_description.text};
-                                        crudService.addData(data).catchError((e) => SnackBar(content: e,));
+                                        // _res = _date.text.split('-');
+                                        // Map<String,dynamic> data = {'choice' : _selected, 'name':_name.text,'date': _res[2],'month' : _res[1],'year' : _res[0],'amount':_amount.text,'description':_description.text};
+                                        Map<String,dynamic> data = {'choice' : _selected, 'name':_name.text,'date': _date.text,'amount':_amount.text,'description':_description.text};
+                                        crudService.addData(data).catchError((error) => SnackBar(content: Text('$error')));
                                       },
 
                                     )

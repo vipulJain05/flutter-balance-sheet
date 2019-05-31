@@ -110,7 +110,7 @@ class _RevenueState extends State<Revenue> {
                     ),
                     Expanded(
                       child: Text(
-                        revenue.documents[item].data['date'].toString() + '-' + revenue.documents[item].data['month'] + '-' + revenue.documents[item].data['year'],
+                        revenue.documents[item].data['date'].toString(),
                         style: TextStyle(color: Colors.black, fontSize: 15.0),
                       ),
                       flex: 2,

@@ -102,7 +102,7 @@ class _ExpenseState extends State<Expense> {
                     ),
                     Expanded(
                       child: Text(
-                        expenditure.documents[item].data['date'].toString() + '-' + expenditure.documents[item].data['month'] + '-' + expenditure.documents[item].data['year'],
+                        expenditure.documents[item].data['date'].toString(),
                         style: TextStyle(color: Colors.black, fontSize: 15.0),
                       ),
                       flex: 2,
