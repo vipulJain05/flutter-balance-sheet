@@ -250,8 +250,6 @@ class _ProfitState extends State<Profit> {
           _totalexpanditure += int.parse(_expenditure.documents[i].data['amount']);
         } 
       });
-
-      dispose();
     }).catchError((err) {
       print("Error $err");
     });

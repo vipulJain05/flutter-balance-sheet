@@ -83,7 +83,7 @@ class _RevenueState extends State<Revenue> {
                   
                 },
                 onLongPress: () {
-                  services.delete('Revenue',revenue.documents[item].documentID);
+                  services.delete('Revenue',revenue.documents[item].documentID,revenue.documents[item].data['date'],revenue.documents[item].data['amount']);
                   AlertDialog alertDialog =AlertDialog(
                     actions: <Widget>[
                       Text('Item Deleted'),

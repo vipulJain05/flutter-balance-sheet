@@ -124,7 +124,7 @@ class _ExpenseState extends State<Expense> {
                   ],
                 ),
                 onLongPress: () {
-                   services.delete('Expenditure', expenditure.documents[item].documentID);
+                   services.delete('Expenditure', expenditure.documents[item].documentID,expenditure.documents[item].data['date'],expenditure.documents[item].data['amount']);
                   AlertDialog alertDialog = AlertDialog(
                           title: Text("Item Deleted"),
                           actions: <Widget>[
