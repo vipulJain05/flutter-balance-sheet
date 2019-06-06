@@ -233,34 +233,13 @@ class _ProfitState extends State<Profit> {
 
   var profit;
   Future _profit() async {
-    await _services.getData('Revenue').then((result) {
-      setState(() {
-        _revenue = result;
-        for(int i = 0; i< _revenue.documents.length;i++){
-          totalrevenue += int.parse(_revenue.documents[i].data['amount']);
-        }
+    await _services.profitLoss().then((result){
+      if(this.mounted){
+        setState(() {
+       _profitLoss = result; 
       });
-
-      
+      }
     });
-    await _services.getData("Expenditure").then((exp) {
-      setState(() {
-       _expenditure = exp;
-       for(int i = 0; i< _expenditure.documents.length;i++){
-          _totalexpanditure += int.parse(_expenditure.documents[i].data['amount']);
-        } 
-      });
-    }).catchError((err) {
-      print("Error $err");
-    });
-
-    if (_revenue.documents.length > _expenditure.documents.length) {
-      _count = _revenue.documents.length;
-    } else {
-      _count = _expenditure.documents.length;
-    }
-    profitLoss = totalrevenue - _totalexpanditure;
-    // _count = 5;
   }
 
 
@@ -372,16 +351,16 @@ class _ProfitState extends State<Profit> {
   }
 
   Widget _data() {
-    if (_count >= 0) {
+    if (_profitLoss != null) {
       return ListView.builder(
-          itemCount: _count,
+          itemCount: _profitLoss.documents.length,
           itemBuilder: (BuildContext context, int item) {
             return GestureDetector(
                           child: Card(
                 margin: EdgeInsets.only(top: 5.0),
                 child: Column(
                   children: <Widget>[
-                    Text("2019",style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold),),
+                    Text(_profitLoss.documents[item].data['Year'],style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold),),
                     Row(
                     children: <Widget>[
                       Expanded(
@@ -398,13 +377,13 @@ class _ProfitState extends State<Profit> {
                   Row(
                     children: <Widget>[
                       Expanded(
-                        child: Text("$totalrevenue",style: TextStyle(fontSize: 15.0),),
+                        child: Text(_profitLoss.documents[item].data['TotalRevenue'].toString(),style: TextStyle(fontSize: 15.0),),
                       ),
                       Expanded(
-                        child: Text("$_totalexpanditure",style: TextStyle(fontSize: 15.0),),
+                        child: Text(_profitLoss.documents[item].data['TotalExpense'].toString(),style: TextStyle(fontSize: 15.0),),
                       ),
                       Expanded(
-                        child: Text("$profitLoss",style: TextStyle(fontSize: 15.0),),
+                        child: Text(_profitLoss.documents[item].data['Total'].toString(),style: TextStyle(fontSize: 15.0),),
                       ),
                     ],
                   ),

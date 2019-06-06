@@ -414,4 +414,13 @@ print(month);
     //   check = '';
     // }
   }
+
+
+  Future profitLoss() async {
+    var _email = await getPreference();
+
+    return await Firestore.instance.collection('$_email').document('data').collection('YearlyData').orderBy('Year',descending: true).getDocuments().catchError((err){
+      print(err);
+    });
+  }
 }

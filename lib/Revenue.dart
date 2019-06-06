@@ -20,9 +20,12 @@ class _RevenueState extends State<Revenue> {
 
   Future getRevenue() async {
     await services.getData('Revenue').then((result) {
-      setState(() {
+      if(this.mounted){
+        setState(() {
+        print(result);
         revenue = result;
       });
+      }
     });
   }
 

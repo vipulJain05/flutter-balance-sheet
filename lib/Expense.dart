@@ -24,11 +24,12 @@ class _ExpenseState extends State<Expense> {
 
   Future _fetch() async {
     await services.getData('Expenditure').then((result) {
-      // expenditure = result;
-      // if (expenditure.documents.length > 0) {
+      if(this.mounted){
         setState(() {
           expenditure = result;
         });
+      }
+        
       // }
     });
   }
