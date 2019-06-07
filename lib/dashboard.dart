@@ -193,11 +193,13 @@
 import 'dart:async';
 
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:event/MonthWiseData.dart';
 import 'package:event/services/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+
 
 class Profit extends StatefulWidget {
   @override
@@ -391,7 +393,10 @@ class _ProfitState extends State<Profit> {
                 ),
               ),
               onTap: () {
-                print("gesture detected");
+                print(_profitLoss.documents[item].data['Year'].toString());
+                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                  return MonthData();
+                }));
               },
             );
           });

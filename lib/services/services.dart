@@ -45,75 +45,7 @@ function to add data into database
           .add(data)
           .catchError((err) => print(err));
 
-//       //add data in RevenueMonth field month wise
-//       QuerySnapshot revenueMonthTotal;
-//       await Firestore.instance
-//           .collection('$_email')
-//           .document('data')
-//           .collection('RevenueMonth')
-//           .where('year', isEqualTo: year)
-//           .where('month', isEqualTo: month)
-//           // .document('$year')
-//           // .collection('$month')
-//           .getDocuments()
-//           .then((reve) {
-//         print("getting first data");
-//         print(reve.documents);
-//         print(reve.documents.length);
-//         revenueMonthTotal = reve;
-//       });
 
-//       var check = revenueMonthTotal.documents.toString();
-//       if (check.indexOf('[') == 0 && check.indexOf(']') == 1) {
-//         check = '';
-//       }
-// //if no field present in database in revenueMonth
-//       if (check.isEmpty) {
-//         await Firestore.instance
-//             .collection('$_email')
-//             .document('data')
-//             .collection('RevenueMonth')
-//             // .document('$year')
-//             // .collection('$month')
-//             .add(_data);
-//       } else {
-//         //if field is present in database in revenueMonth
-
-//         QuerySnapshot _updateData;
-//         await Firestore.instance
-//             .collection('$_email')
-//             .document('data')
-//             .collection('RevenueMonth')
-//             .where('year', isEqualTo: '$year')
-//             .where('month', isEqualTo: month)
-//             // .document('$year')
-//             // .collection('$month')
-//             .getDocuments()
-//             .then((value) {
-//           _updateData = value;
-//           print("check new structure");
-//           print(value.documents[0].data);
-//         });
-//         var docId = _updateData.documents[0].documentID;
-//         int amount = _updateData == null
-//             ? 0
-//             : int.parse(_updateData.documents[0].data['amount'].toString());
-//         // int _updatedamount = amount + _newamount;
-//         _data = {'amount': amount + _newamount, 'month': month, 'year': year};
-//         //delete previous document
-//         await Firestore.instance
-//             .collection('$_email')
-//             .document('data')
-//             .collection('RevenueMonth')
-//             .where('year', isEqualTo: year)
-//             .where('month', isEqualTo: month)
-//             .reference()
-//             .document(docId)
-//             .updateData(_data)
-//             .then((onValue) {
-//           print("updated");
-//         });
-//       }
     } else {
       //add data for expenditure
       await Firestore.instance
@@ -125,64 +57,7 @@ function to add data into database
         return true;
       }).catchError((err) => print(err));
 
-      // //add data for month wise calculation
-      // QuerySnapshot expenseMonthTotal;
-      // await Firestore.instance
-      //     .collection('$_email')
-      //     .document('data')
-      //     .collection('ExpenseMonth')
-      //     .where('year', isEqualTo: year)
-      //     .where('month', isEqualTo: month)
-      //     .getDocuments()
-      //     .then((reve) {
-      //   expenseMonthTotal = reve;
-      // });
 
-      // var check = expenseMonthTotal.documents.toString();
-      // if (check.indexOf('[') == 0 && check.indexOf(']') == 1) {
-      //   check = '';
-      // }
-      // //if no field present
-      // if (check.isEmpty) {
-      //   await Firestore.instance
-      //       .collection('$_email')
-      //       .document('data')
-      //       .collection('ExpenseMonth')
-      //       // .document('$year')
-      //       // .collection('$month')
-      //       .add(_data);
-      // } else {
-      //   //if field present
-      //   QuerySnapshot _updateData;
-      //   await Firestore.instance
-      //       .collection('$_email')
-      //       .document('data')
-      //       .collection('ExpenseMonth')
-      //       .where('year', isEqualTo: year)
-      //       .where('month', isEqualTo: month)
-      //       // .document('$year')
-      //       // .collection('$month')
-      //       .getDocuments()
-      //       .then((value) {
-      //     _updateData = value;
-      //   });
-      //   var docId = _updateData.documents[0].documentID;
-      //   int amount = _updateData == null
-      //       ? 0
-      //       : int.parse(_updateData.documents[0].data['amount'].toString());
-      //   // int _updatedamount = amount + _newamount;
-      //   _data = {'amount': amount + _newamount, 'month': month, 'year': year};
-
-      //   await Firestore.instance
-      //       .collection('$_email')
-      //       .document('data')
-      //       .collection('ExpenseMonth')
-      //       .where('year', isEqualTo: year)
-      //       .where('month', isEqualTo: month)
-      //       .reference()
-      //       .document(docId)
-      //       .updateData(_data);
-      // }
     }
 
     // await addYearList();
@@ -209,7 +84,8 @@ function to delete data
 @required page and documentId
  */
   Future delete(String page, var docId, var olddate, var amount) async {
-    QuerySnapshot _result;
+    QuerySnapshot value;
+    QuerySnapshot _yearValue;
     var date = olddate.toString().split('-');
     var year = date[0];
     var month = date[1];
@@ -222,64 +98,51 @@ function to delete data
         .delete()
         .catchError((err) => print(err));
 
-    // var newpage;
-    // if (page == 'Revenue') {
-    //   newpage = 'RevenueMonth';
-    // } else {
-    //   newpage = 'ExpenseMonth';
-    // }
 
-    // await Firestore.instance
-    //     .collection('$_email')
-    //     .document('data')
-    //     .collection(newpage)
-    //     .where('year', isEqualTo: year)
-    //     .where('month', isEqualTo: month)
-    //     .getDocuments()
-    //     .then((result) {
-    //   _result = result;
-    // });
-    // var docIdForMonth = _result.documents[0].documentID;
-    // var oldamount = _result == null
-    //     ? 0
-    //     : int.parse(_result.documents[0].data['amount'].toString());
-    // // var _updatedamount = (oldamount - int.parse(amount.toString())).toString();
-    // Map<String, dynamic> _data = {
-    //   'amount': (oldamount - int.parse(amount.toString())).toString()
-    // };
-    // await Firestore.instance
-    //     .collection('$_email')
-    //     .document('data')
-    //     .collection(newpage)
-    //     .where('year', isEqualTo: year)
-    //     .where('month', isEqualTo: month)
-    //     .reference()
-    //     .document(docIdForMonth)
-    //     .updateData(_data);
+    await Firestore.instance.collection(_email)
+        .document('data')
+        .collection('MonthWise').where('Year',isEqualTo: year).where('Month',isEqualTo: month).getDocuments().then((result){
+          value = result;
+          print("object");
+          print(result.documents);
+        });
+
+        var monthDocId = value.documents[0].documentID;
+if(page == "Revenue"){
+        revenue = value == null ? 0 : int.parse(value.documents[0].data['Revenue'].toString()) - int.parse(amount.toString()) ;
+        expense = value.documents[0].data['Expense'];
+      }else {
+        print("sucessful");
+        expense = value == null ? 0 : int.parse(value.documents[0].data['Expense'].toString()) - int.parse(amount.toString());
+        revenue = value.documents[0].data['Revenue'];
+      }
+      
+
+      Map<String,dynamic> _record = {'Year' : year,'Month':month,'Revenue' : revenue,'Expense' : expense};
+      await Firestore.instance.collection(_email).document('data').collection('MonthWise').where('Year',isEqualTo: year).where('Month',isEqualTo: month).reference().document(monthDocId).updateData(_record).then((onValue){
+      });
+
+
+await Firestore.instance.collection(_email).document('data').collection('YearlyData').where('Year',isEqualTo: year).getDocuments().then((result){
+      _yearValue = result;
+    });
+     var yeardocId = _yearValue.documents[0].documentID;
+
+
+if(page == "Revenue"){
+        _totalrevenue = int.parse(_yearValue.documents[0].data['TotalRevenue'].toString()) - int.parse(amount.toString()) ;
+        _totalexpense = int.parse(_yearValue.documents[0].data['TotalExpense'].toString());
+      }else {
+        _totalexpense = int.parse(_yearValue.documents[0].data['TotalExpense'].toString()) - int.parse(amount.toString());
+        _totalrevenue = int.parse(_yearValue.documents[0].data['TotalRevenue'].toString());
+      }
+      total = _totalrevenue - _totalexpense;
+
+      Map<String,dynamic> _yearRecord = {'Year' : year,'Total' : total,'TotalRevenue' : _totalrevenue,'TotalExpense' : _totalexpense};
+      await Firestore.instance.collection(_email).document('data').collection('YearlyData').where('Year',isEqualTo: year).reference().document(yeardocId).updateData(_yearRecord).then((onValue){
+      });
   }
 
-  // Future addYearList() async {
-  //   var _email = await getPreference();
-  //   QuerySnapshot _yeardata;
-  //   await Firestore.instance
-  //       .collection('$_email')
-  //       .document('data')
-  //       .collection('RevenueMonth')
-  //       .getDocuments()
-  //       .then((result) {
-  //     print(result.documents);
-  //     _yeardata = result;
-  //   });
-
-  //   // List<String> listYear = List<String>();
-  //   // for (int i = 0; i < _yeardata.documents.length; i++) {
-  //   //   if(listYear.isEmpty || !listYear.contains(_yeardata.documents[i].data['year']) ) {
-  //   //     listYear.add(_yeardata.documents[i].data['year']);
-  //   //   }
-  //   // }
-
-  //   // await Firestore.instance.collection('$_email').document('data').collection('RevenueYear').reference().document().updateData(listYear)
-  // }
 
   Future adddataMonthWise(var _email, var page,var data) async {
 
@@ -319,16 +182,6 @@ print(month);
       await Firestore.instance.collection(_email).document('data').collection('MonthWise').add(_record);
     }else {
 
-    //    Firestore.instance
-    //     .collection(_email)
-    //     .document('data')
-    //     .collection('MonthWise').where('Year',isEqualTo: year).where('Month',isEqualTo: month).reference()
-    //     .getDocuments()
-    //     .then((result) {
-    //       value = result;
-    //       print("jfdksjf");
-    //       // print(value.documents[0].data);
-    // }); 
 
       if(page == "REVENUE"){
         revenue = value == null ? 0 : int.parse(data['amount'].toString()) +  int.parse(value.documents[0].data['Revenue'].toString());
@@ -339,9 +192,7 @@ print(month);
       
       
               var docId = value.documents[0].documentID;
-        // int amount = _updateData == null
-        //     ? 0
-        //     : int.parse(_updateData.documents[0].data['amount'].toString());
+
 
       Map<String,dynamic> _record = {'Year' : year,'Month':month,'Revenue' : revenue,'Expense' : expense};
       await Firestore.instance.collection(_email).document('data').collection('MonthWise').where('Year',isEqualTo: year).where('Month',isEqualTo: month).reference().document(docId).updateData(_record).then((onValue){
@@ -392,27 +243,6 @@ print(month);
       });
       }
 
-
-
-
-
-
-    // QuerySnapshot expenseMonthTotal;
-    // await Firestore.instance
-    //     .collection('$_email')
-    //     .document('data')
-    //     .collection('ExpenseMonth')
-    //     .where('year', isEqualTo: year)
-    //     .where('month', isEqualTo: month)
-    //     .getDocuments()
-    //     .then((reve) {
-    //   expenseMonthTotal = reve;
-    // });
-
-    // var check = expenseMonthTotal.documents.toString();
-    // if (check.indexOf('[') == 0 && check.indexOf(']') == 1) {
-    //   check = '';
-    // }
   }
 
 

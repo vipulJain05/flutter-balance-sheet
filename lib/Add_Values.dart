@@ -16,7 +16,6 @@ class _AddDetailsState extends State<AddDetails> {
   TextEditingController _amount = TextEditingController();
   TextEditingController _description = TextEditingController();
   InputType inputType = InputType.date;
-  bool editable = true;
   DateTime date;
   final formats = {
     InputType.both: DateFormat("EEEE, MMMM d, yyyy 'at' h:mma"),
@@ -105,7 +104,7 @@ class _AddDetailsState extends State<AddDetails> {
                   controller: _date,
                   inputType: inputType,
                   format: formats[inputType],
-                  editable: editable,
+                  editable: false,
                   decoration: InputDecoration(
                     labelText: 'Date',
                     hasFloatingPlaceholder: false,
@@ -119,6 +118,7 @@ class _AddDetailsState extends State<AddDetails> {
                   onChanged: (dt) => setState(() => date = dt),
                 ),
               ),
+
               Padding(
                 padding: EdgeInsets.all(5.0),
                 child: TextFormField(
