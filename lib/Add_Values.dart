@@ -30,16 +30,6 @@ class _AddDetailsState extends State<AddDetails> {
     _selected = _option[0];
     super.initState();
   }
-
-  var _res;
-// @override
-// void dispose() {
-//     _name.dispose();
-//     _date.dispose();
-//     _amount.dispose();
-//     _description.dispose();
-//     super.dispose();
-//   }
   
   @override
   Widget build(BuildContext context) {

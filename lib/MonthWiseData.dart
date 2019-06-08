@@ -7,12 +7,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
 class MonthData extends StatefulWidget {
+  final year;
+  MonthData(this.year);
   @override
-  _MonthDataState createState() => _MonthDataState();
+  _MonthDataState createState() => _MonthDataState(this.year);
 }
 
 class _MonthDataState extends State<MonthData> {
-  QuerySnapshot _profitLoss;
+  QuerySnapshot _monthwiseData;
+  var year;
   InputType inputType = InputType.date;
   CrudServices _services = CrudServices();
   DateTime date;
@@ -24,6 +27,8 @@ class _MonthDataState extends State<MonthData> {
   TextEditingController _dateFrom = TextEditingController();
   TextEditingController _dateTo = TextEditingController();
 
+  _MonthDataState(this.year);
+
   @override
   void initState() {
     _monthdata();
@@ -31,14 +36,20 @@ class _MonthDataState extends State<MonthData> {
   }
 
   Future _monthdata() async {
-    
+   await _services.monthWisedata(year).then((result){
+      if(mounted){
+        setState(() {
+          _monthwiseData = result;
+        });
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('2019'),
+          title: Text(year),
         ),
         body: Padding(
           padding: const EdgeInsets.only(top: 8.0,left: 8.0),
@@ -78,9 +89,9 @@ class _MonthDataState extends State<MonthData> {
   }
 
   Widget _data() {
-    if (_profitLoss != null) {
+    if (_monthwiseData != null) {
       return ListView.builder(
-          itemCount: _profitLoss.documents.length,
+          itemCount: _monthwiseData.documents.length,
           itemBuilder: (BuildContext context, int item) {
             return Card(
               margin: EdgeInsets.only(top: 12.0, bottom: 2.0),
@@ -89,26 +100,26 @@ class _MonthDataState extends State<MonthData> {
                   children: <Widget>[
                     Expanded(
                       child: Text(
-                        'jan',
+                        _monthwiseData.documents[item].data['Month'],
                         style: TextStyle(color: Colors.black, fontSize: 15.0),
                       ),
                     ),
                     
                     Expanded(
                       child: Text(
-                        '2000',
+                        _monthwiseData.documents[item].data['Revenue'].toString(),
                         style: TextStyle(color: Colors.black, fontSize: 15.0),
                       ),
                     ),
                     Expanded(
                       child: Text(
-                        '3000',
+                        _monthwiseData.documents[item].data['Expense'].toString(),
                         style: TextStyle(color: Colors.black, fontSize: 15.0),
                       ),
                     ),
                     Expanded(
                       child: Text(
-                        '1000',
+                        _monthwiseData.documents[item].data['Total'].toString(),
                         style: TextStyle(color: Colors.black, fontSize: 15.0),
                       ),
                     ),

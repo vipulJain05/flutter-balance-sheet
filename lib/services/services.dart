@@ -15,6 +15,7 @@ class CrudServices {
   static var revenue = 0;
   static var expense = 0;
   static var total = 0;
+  var _monthTotal = 0;
   static var _totalrevenue = 0;
   static var _totalexpense = 0;
 /*
@@ -22,16 +23,10 @@ function to add data into database
 @required: data
 */
   Future<void> addData(data) async {
-    var date = data['date'].toString().split('-');
-    var year = date[0];
-    var month = date[1];
-    int _newamount = int.parse(data['amount']);
+    // var date = data['date'].toString().split('-');
+    // var year = date[0];
+    // var month = date[1];
 
-    Map<String, dynamic> _data = {
-      'amount': data['amount'],
-      'month': month,
-      'year': year
-    };
     var _email = await getPreference();
 
     adddataMonthWise(_email, data['choice'],data);
@@ -173,28 +168,32 @@ print(month);
     if(check.isEmpty){
       revenue = 0;
       expense = 0;
+      _monthTotal = 0;
       if(page == 'REVENUE') {
         revenue = int.parse(data['amount'].toString());
       }else {
         expense = int.parse(data['amount'].toString());
       }
-      Map<String,dynamic> _record = {'Year' : year,'Month':month,'Revenue' : revenue,'Expense' : expense};
+
+      _monthTotal = revenue - expense;
+      print("in if $_monthTotal");
+      Map<String,dynamic> _record = {'Year' : year,'Month':month,'Revenue' : revenue,'Expense' : expense,'Total' : _monthTotal};
       await Firestore.instance.collection(_email).document('data').collection('MonthWise').add(_record);
     }else {
 
-
+_monthTotal = 0;
       if(page == "REVENUE"){
         revenue = value == null ? 0 : int.parse(data['amount'].toString()) +  int.parse(value.documents[0].data['Revenue'].toString());
       }else {
         print("sucessful");
         expense = value == null ? 0 : int.parse(data['amount'].toString()) + int.parse(value.documents[0].data['Expense'].toString());
       }
-      
-      
+      _monthTotal = revenue - expense;
+      print("in else $_monthTotal");
               var docId = value.documents[0].documentID;
 
 
-      Map<String,dynamic> _record = {'Year' : year,'Month':month,'Revenue' : revenue,'Expense' : expense};
+      Map<String,dynamic> _record = {'Year' : year,'Month':month,'Revenue' : revenue,'Expense' : expense,'Total' : _monthTotal};
       await Firestore.instance.collection(_email).document('data').collection('MonthWise').where('Year',isEqualTo: year).where('Month',isEqualTo: month).reference().document(docId).updateData(_record).then((onValue){
       });
     }
@@ -252,5 +251,11 @@ print(month);
     return await Firestore.instance.collection('$_email').document('data').collection('YearlyData').orderBy('Year',descending: true).getDocuments().catchError((err){
       print(err);
     });
+  }
+
+
+  Future monthWisedata(var year) async{
+    var _email = await getPreference();
+    return Firestore.instance.collection(_email).document('data').collection('MonthWise').where('Year',isEqualTo: year).getDocuments().catchError((err){print(err);});
   }
 }

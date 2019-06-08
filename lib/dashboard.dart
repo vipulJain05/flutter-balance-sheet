@@ -200,7 +200,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
-
 class Profit extends StatefulWidget {
   @override
   _ProfitState createState() => _ProfitState();
@@ -208,13 +207,8 @@ class Profit extends StatefulWidget {
 
 class _ProfitState extends State<Profit> {
   QuerySnapshot _profitLoss;
-  QuerySnapshot _revenue;
-  QuerySnapshot _expenditure;
   int profitLoss = 0;
   int totalrevenue = 0;
-  int _totalexpanditure = 0;
-  static var _count = 0;
-  var _currentstep = 1;
   InputType inputType = InputType.date;
   CrudServices _services = CrudServices();
   bool editable = true;
@@ -235,15 +229,14 @@ class _ProfitState extends State<Profit> {
 
   var profit;
   Future _profit() async {
-    await _services.profitLoss().then((result){
-      if(this.mounted){
+    await _services.profitLoss().then((result) {
+      if (this.mounted) {
         setState(() {
-       _profitLoss = result; 
-      });
+          _profitLoss = result;
+        });
       }
     });
   }
-
 
 //   @override
 //   Widget build(BuildContext context) {
@@ -358,44 +351,74 @@ class _ProfitState extends State<Profit> {
           itemCount: _profitLoss.documents.length,
           itemBuilder: (BuildContext context, int item) {
             return GestureDetector(
-                          child: Card(
+              child: Card(
                 margin: EdgeInsets.only(top: 5.0),
                 child: Column(
                   children: <Widget>[
-                    Text(_profitLoss.documents[item].data['Year'],style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold),),
+                    Text(
+                      _profitLoss.documents[item].data['Year'],
+                      style: TextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.bold),
+                    ),
                     Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Text("Revenue",style: TextStyle(fontSize: 15.0,fontWeight: FontWeight.bold),),
-                      ),
-                      Expanded(
-                        child: Text("Expense",style: TextStyle(fontSize: 15.0,fontWeight: FontWeight.bold),),
-                      ),
-                      Expanded(
-                        child: Text("profit",style: TextStyle(fontSize: 15.0,fontWeight: FontWeight.bold),),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(_profitLoss.documents[item].data['TotalRevenue'].toString(),style: TextStyle(fontSize: 15.0),),
-                      ),
-                      Expanded(
-                        child: Text(_profitLoss.documents[item].data['TotalExpense'].toString(),style: TextStyle(fontSize: 15.0),),
-                      ),
-                      Expanded(
-                        child: Text(_profitLoss.documents[item].data['Total'].toString(),style: TextStyle(fontSize: 15.0),),
-                      ),
-                    ],
-                  ),
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(
+                            "Revenue",
+                            style: TextStyle(
+                                fontSize: 15.0, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            "Expense",
+                            style: TextStyle(
+                                fontSize: 15.0, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            "profit",
+                            style: TextStyle(
+                                fontSize: 15.0, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(
+                            _profitLoss.documents[item].data['TotalRevenue']
+                                .toString(),
+                            style: TextStyle(fontSize: 15.0),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            _profitLoss.documents[item].data['TotalExpense']
+                                .toString(),
+                            style: TextStyle(fontSize: 15.0),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            _profitLoss.documents[item].data['Total']
+                                .toString(),
+                            style: TextStyle(fontSize: 15.0),
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
               onTap: () {
                 print(_profitLoss.documents[item].data['Year'].toString());
-                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                  return MonthData();
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (BuildContext context) {
+                  return MonthData(
+                      _profitLoss.documents[item].data['Year'].toString());
                 }));
               },
             );
@@ -461,71 +484,41 @@ class _ProfitState extends State<Profit> {
   //   }
   // }
 
+  // Widget _plyw(
+  //     String year, int count, QuerySnapshot revenue, QuerySnapshot expense) {
+  //   for (int j = 1; j < 12; j++) {}
 
-  Widget _plyw(String year,int count,QuerySnapshot revenue,QuerySnapshot expense) {
-    for(int j=1;j<12;j++){
-      
-    }
+  //   for (int i = 0; i < count; i++) {
+  //     if (revenue.documents[i].data['year'] == year) {
+  //       for (int j = 1; i < 12; i++) {}
 
+  //       // var k= 0;
+  //       // for (int i = 1; i < 12; i++) {
+  //       //   int revenueCount = 0;
+  //       //   for (int j = 0;j < _revenue.documents.length; j++) {
+  //       //     if(int.parse(_revenue.documents[j].data['month']) == i){
+  //       //       revenueCount += int.parse(_revenue.documents[j].data['amount']);
+  //       //     } else {
+  //       //       continue;
+  //       //     }
+  //       //   }
+  //       //   if(revenueCount != 0) {
+  //       //     // arr[][]
+  //       //   }
+  //       //   print("hsdkjhakj  $i  $revenueCount  $k");
+  //       // }
+  //     }
+  //   }
 
-
-    for(int i = 0; i<count;i++){
-      if(revenue.documents[i].data['year'] == year){
-        for(int j = 1; i<12;i++){
-
-        }
-
-
-        // var k= 0;
-    // for (int i = 1; i < 12; i++) {
-    //   int revenueCount = 0;
-    //   for (int j = 0;j < _revenue.documents.length; j++) {
-    //     if(int.parse(_revenue.documents[j].data['month']) == i){
-    //       revenueCount += int.parse(_revenue.documents[j].data['amount']);
-    //     } else {
-    //       continue;
-    //     }
-    //   }
-    //   if(revenueCount != 0) {
-    //     // arr[][]
-    //   }
-    //   print("hsdkjhakj  $i  $revenueCount  $k");
-    // }
-      }
-    }
-
-    // return ListView.builder(
-    //   itemBuilder: (BuildContext context,int item) {
-    //     // for(int i=0;i < count;i++){
-    //     //   if(revenue.documents.){}
-    //     // }
-    //   },
-    // );
-  }
-
-
-
+  //   // return ListView.builder(
+  //   //   itemBuilder: (BuildContext context,int item) {
+  //   //     // for(int i=0;i < count;i++){
+  //   //     //   if(revenue.documents.){}
+  //   //     // }
+  //   //   },
+  //   // );
+  // }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // return Card(
 //               child: Column(
