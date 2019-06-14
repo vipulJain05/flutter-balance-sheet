@@ -83,7 +83,9 @@ class _RevenueState extends State<Revenue> {
               margin: EdgeInsets.only(top: 12.0, bottom: 2.0),
               child: ListTile(
                 onTap: () {
-                  
+                  // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                  //   return
+                  // }));
                 },
                 onLongPress: () {
                   services.delete('Revenue',revenue.documents[item].documentID,revenue.documents[item].data['date'],revenue.documents[item].data['amount']);

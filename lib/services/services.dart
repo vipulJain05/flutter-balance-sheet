@@ -80,6 +80,7 @@ function to delete data
  */
   Future delete(String page, var docId, var olddate, var amount) async {
     QuerySnapshot value;
+    var _total;
     QuerySnapshot _yearValue;
     var date = olddate.toString().split('-');
     var year = date[0];
@@ -98,8 +99,6 @@ function to delete data
         .document('data')
         .collection('MonthWise').where('Year',isEqualTo: year).where('Month',isEqualTo: month).getDocuments().then((result){
           value = result;
-          print("object");
-          print(result.documents);
         });
 
         var monthDocId = value.documents[0].documentID;
@@ -107,13 +106,12 @@ if(page == "Revenue"){
         revenue = value == null ? 0 : int.parse(value.documents[0].data['Revenue'].toString()) - int.parse(amount.toString()) ;
         expense = value.documents[0].data['Expense'];
       }else {
-        print("sucessful");
         expense = value == null ? 0 : int.parse(value.documents[0].data['Expense'].toString()) - int.parse(amount.toString());
         revenue = value.documents[0].data['Revenue'];
       }
-      
+      _total = revenue - expense;
 
-      Map<String,dynamic> _record = {'Year' : year,'Month':month,'Revenue' : revenue,'Expense' : expense};
+      Map<String,dynamic> _record = {'Year' : year,'Month':month,'Revenue' : revenue,'Expense' : expense,'Total' : _total};
       await Firestore.instance.collection(_email).document('data').collection('MonthWise').where('Year',isEqualTo: year).where('Month',isEqualTo: month).reference().document(monthDocId).updateData(_record).then((onValue){
       });
 

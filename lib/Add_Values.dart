@@ -83,9 +83,7 @@ class _AddDetailsState extends State<AddDetails> {
                         color: Colors.red,
                         fontSize: 10.0,
                       )),
-                  // onEditingComplete: (){
-                  //   _name.text =_name
-                  // },
+                  
                 ),
               ),
               Padding(
@@ -157,6 +155,8 @@ class _AddDetailsState extends State<AddDetails> {
                               onPressed: (){
                                 //Navigator.pop(context);
                                 if(_key.currentState.validate() ==true){
+                                  Map<String,dynamic> data = {'choice' : _selected, 'name':_name.text,'date': _date.text,'amount':_amount.text,'description':_description.text};
+                                  crudService.addData(data).catchError((error) => SnackBar(content: Text('$error')));
                                   AlertDialog alert = AlertDialog(
                                   backgroundColor: Colors.lightGreen,
                                   title: Text('Successfull'),
@@ -167,14 +167,14 @@ class _AddDetailsState extends State<AddDetails> {
                                         Navigator.pop(context);
                                         // _res = _date.text.split('-');
                                         // Map<String,dynamic> data = {'choice' : _selected, 'name':_name.text,'date': _res[2],'month' : _res[1],'year' : _res[0],'amount':_amount.text,'description':_description.text};
-                                        Map<String,dynamic> data = {'choice' : _selected, 'name':_name.text,'date': _date.text,'amount':_amount.text,'description':_description.text};
-                                        crudService.addData(data).catchError((error) => SnackBar(content: Text('$error')));
+                                        
                                       },
 
                                     )
                                   ],
                                 );
                                 showDialog(
+                                  barrierDismissible: false,
                                   context: context,
                                   builder: (_) => alert
                                 );
