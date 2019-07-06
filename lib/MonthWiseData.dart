@@ -24,8 +24,6 @@ class _MonthDataState extends State<MonthData> {
     InputType.date: DateFormat('yyyy-MM-dd'),
     InputType.time: DateFormat("HH:mm"),
   };
-  TextEditingController _dateFrom = TextEditingController();
-  TextEditingController _dateTo = TextEditingController();
 
   _MonthDataState(this.year);
 

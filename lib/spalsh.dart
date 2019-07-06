@@ -1,20 +1,29 @@
 import 'dart:async';
-import 'package:event/dashboard.dart';
-import 'package:event/details.dart';
+import 'package:event/checkInternet.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Splash extends StatefulWidget {
+
+  final _data;
+
+  Splash(this._data);
   @override
-  _SplashState createState() => _SplashState();
+  _SplashState createState() => _SplashState(_data);
 }
 
 class _SplashState extends State<Splash> {
-
+  final _data;
+  _SplashState(this._data);
   @override
   void initState() {
+getPreferences(this._data);
     super.initState();
-    Timer(Duration(seconds: 2),() => checkLogin());
+    Timer(Duration(seconds: 2),() {
+Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) {
+  return CheckConnectivity();
+}));
+    }); 
   }
 
   @override
@@ -77,24 +86,50 @@ class _SplashState extends State<Splash> {
   }
 
 
-  Future<Null> checkLogin() async {
-    var _email = await getPreferences();
-    if(_email != "" && _email != null){
-      print("already login");
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) {
-        Profit();
-      }));
-    }else {
-      print("go to login");
-       Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) {
-        SignIn();
-      }));
-    }
-  }
+  // Future<Null> checkLogin() async {
+  //   var _connectionState = "unknown";
+  //   Connectivity connectivity = new Connectivity();;
+  //   var _email = await getPreferences();
+  //   StreamSubscription<ConnectivityResult> subscription = connectivity.onConnectivityChanged.listen((ConnectivityResult result){
+  //     print(result);
+  //     if(result == ConnectivityResult.mobile || result == ConnectivityResult.wifi){
+  //       // Navigator.of(context).popUntil((route) => route.isFirst);
+  //         if(_email != "" && _email != null){
+  //     Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) {
+  //      return Details();
+  //     }));
+  //   }else {
+  //      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) {
+  //       return SignIn();
+  //     }));
+  //   }
+  //     }else{
+  //       print("net connection lost");
+  //       // Navigator.of(context).popUntil((route) => route.isFirst);
+  //       Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) {
+  //      return InternetConnectivity();
+  //     }));
+  //     }
+  //   });
 
-  Future<String> getPreferences() async {
+  //   // @override
+  //   // void dispose(){
+  //   //   subscription.cancel();
+  //   //   super.dispose();
+  //   // }
+
+    
+    
+  // }
+
+  Future<String> getPreferences(var _state) async {
     SharedPreferences _sharedPreferences = await SharedPreferences.getInstance();
-    var _email = _sharedPreferences.getString('email');
-    return _email;
+
+    if(_state == "Logout") {
+      _sharedPreferences.remove('email');
+    }
+    return null;
+    // var _email = _sharedPreferences.getString('email');
+    // return _email;
   }
 }

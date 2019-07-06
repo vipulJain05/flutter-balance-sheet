@@ -218,8 +218,6 @@ class _ProfitState extends State<Profit> {
     InputType.date: DateFormat('yyyy-MM-dd'),
     InputType.time: DateFormat("HH:mm"),
   };
-  TextEditingController _dateFrom = TextEditingController();
-  TextEditingController _dateTo = TextEditingController();
 
   @override
   void initState() {

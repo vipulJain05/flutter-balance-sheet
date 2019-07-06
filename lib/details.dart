@@ -4,6 +4,7 @@ import 'package:event/Add_Values.dart';
 import 'package:event/Expense.dart';
 import 'package:event/Revenue.dart';
 import 'package:event/dashboard.dart';
+import 'package:event/spalsh.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -29,7 +30,7 @@ class _SignInState extends State<SignIn> {
     FirebaseUser _user = await _firebaseAuth
         .signInWithCredential(credential)
         .then((onValue) async {
-      CircularProgressIndicator();
+      // CircularProgressIndicator();
       preferences = await SharedPreferences.getInstance();
       preferences.setString('email', onValue.uid);
       Navigator.pushReplacement(context,
@@ -46,9 +47,13 @@ class _SignInState extends State<SignIn> {
 // }
 // NoSuchMethodError (NoSuchMethodError: The method 'signout' was called on null. Receiver: null Tried calling: signout()) in flutter
 
-  void signout() {
+  void signout() async{
+    print("object");
     // _firebaseAuth.signOut();
-    _googleSignIn.signOut();
+    _googleSignIn.signOut().then((result){
+      print("result $result");
+    });
+    
     // preferences.clear();
   }
 
@@ -80,20 +85,32 @@ class Details extends StatefulWidget {
 
 class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
   TabController tabcontroller;
+  var option = 'REVENUE';
   _SignInState _signin = _SignInState();
-  Future<String> getPreference() async {
-    SharedPreferences _preferences = await SharedPreferences.getInstance();
-    String _email = _preferences.getString('email');
-    print("dfsrtrterteter" + _email);
-    return _email;
-  }
+  // Future<String> getPreference() async {
+  //   SharedPreferences _preferences = await SharedPreferences.getInstance();
+  //   String _email = _preferences.getString('email');
+  //   return _email;
+  // }
 
   @override
   void initState() {
     super.initState();
-    tabcontroller = TabController(length: 3, vsync: this);
-    var email = getPreference();
-    print("email $email");
+    tabcontroller = TabController(length: 3, vsync: this)..addListener((){
+      setState(() {
+        switch(tabcontroller.index){
+          case 0:
+            break;
+          case 1:
+            option = "REVENUE";
+            break;
+          case 2:
+           option = "EXPENDITURE";
+           break;
+        }
+      });
+    });
+    // var email = getPreference();
   }
 
   @override
@@ -114,7 +131,7 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
               _signin.signout();
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (BuildContext context) {
-                return SignIn();
+                return Splash("Logout");
               }));
               // FirebaseAuth.instance.signOut().then((test){print("jdfklkf");
               // });
@@ -137,7 +154,7 @@ class _DetailsState extends State<Details> with SingleTickerProviderStateMixin {
         onPressed: () {
           Navigator.push(context,
               MaterialPageRoute(builder: (BuildContext context) {
-            return AddDetails();
+            return AddDetails(option);
           }));
         },
       ),

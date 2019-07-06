@@ -4,11 +4,18 @@ import 'package:intl/intl.dart';
 import 'services/services.dart';
 
 class AddDetails extends StatefulWidget {
+  final option;
+
+  AddDetails(this.option);
+
   @override
-  _AddDetailsState createState() => _AddDetailsState();
+  _AddDetailsState createState() => _AddDetailsState(this.option);
 }
 
 class _AddDetailsState extends State<AddDetails> {
+  final optionSelected;
+  _AddDetailsState(this.optionSelected);
+
   var _key = GlobalKey<FormState>();
   CrudServices crudService = CrudServices();
   TextEditingController _name = TextEditingController();
@@ -27,10 +34,17 @@ class _AddDetailsState extends State<AddDetails> {
   var _selected = '';
   @override
   void initState() {
-    _selected = _option[0];
+    getSelectedOption();
     super.initState();
   }
-  
+
+ void getSelectedOption(){
+   if(optionSelected == "EXPENDITURE"){
+     _selected = _option[1];
+   }else{
+     _selected = _option[0];
+   }
+ }
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -40,10 +54,12 @@ class _AddDetailsState extends State<AddDetails> {
       child: Scaffold(
           appBar: AppBar(
             title: Text("Add Details"),
-            leading: IconButton(icon: Icon( Icons.arrow_back),
-             onPressed: () {
-               Navigator.pop(context);
-             },),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
           ),
           body: Form(
             key: _key,
@@ -83,7 +99,6 @@ class _AddDetailsState extends State<AddDetails> {
                         color: Colors.red,
                         fontSize: 10.0,
                       )),
-                  
                 ),
               ),
               Padding(
@@ -97,16 +112,15 @@ class _AddDetailsState extends State<AddDetails> {
                     labelText: 'Date',
                     hasFloatingPlaceholder: false,
                     errorStyle: TextStyle(
-                        color: Colors.red,
-                        fontSize: 10.0,
-                      ),
+                      color: Colors.red,
+                      fontSize: 10.0,
+                    ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0)),
                   ),
                   onChanged: (dt) => setState(() => date = dt),
                 ),
               ),
-
               Padding(
                 padding: EdgeInsets.all(5.0),
                 child: TextFormField(
@@ -140,69 +154,72 @@ class _AddDetailsState extends State<AddDetails> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
                         ),
-                      ))
+                      ))),
+              Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: RaisedButton(
+                        color: Colors.blue,
+                        splashColor: Colors.tealAccent,
+                        shape: BeveledRectangleBorder(),
+                        child: Text('Submit'),
+                        onPressed: () {
+                          //Navigator.pop(context);
+                          if (_key.currentState.validate() == true) {
+                            Map<String, dynamic> data = {
+                              'choice': _selected,
+                              'name': _name.text,
+                              'date': _date.text,
+                              'amount': _amount.text,
+                              'description': _description.text
+                            };
+                            crudService.addData(data).catchError(
+                                (error) => SnackBar(content: Text('$error')));
+                            AlertDialog alert = AlertDialog(
+                              backgroundColor: Colors.lightGreen,
+                              title: Text('Successfull'),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text("OK"),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    // _res = _date.text.split('-');
+                                    // Map<String,dynamic> data = {'choice' : _selected, 'name':_name.text,'date': _res[2],'month' : _res[1],'year' : _res[0],'amount':_amount.text,'description':_description.text};
+                                  },
+                                )
+                              ],
+                            );
+                            showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (_) => alert);
+                          }
+                        },
+                      ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.all(5.0),
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: RaisedButton(
-                              color: Colors.blue,
-                              splashColor: Colors.tealAccent,
-                              shape: BeveledRectangleBorder(),
-                              child: Text('Submit'),
-                              onPressed: (){
-                                //Navigator.pop(context);
-                                if(_key.currentState.validate() ==true){
-                                  Map<String,dynamic> data = {'choice' : _selected, 'name':_name.text,'date': _date.text,'amount':_amount.text,'description':_description.text};
-                                  crudService.addData(data).catchError((error) => SnackBar(content: Text('$error')));
-                                  AlertDialog alert = AlertDialog(
-                                  backgroundColor: Colors.lightGreen,
-                                  title: Text('Successfull'),
-                                  actions: <Widget>[
-                                    FlatButton(
-                                      child: Text("OK"), 
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                        // _res = _date.text.split('-');
-                                        // Map<String,dynamic> data = {'choice' : _selected, 'name':_name.text,'date': _res[2],'month' : _res[1],'year' : _res[0],'amount':_amount.text,'description':_description.text};
-                                        
-                                      },
-
-                                    )
-                                  ],
-                                );
-                                showDialog(
-                                  barrierDismissible: false,
-                                  context: context,
-                                  builder: (_) => alert
-                                );
-                                } 
-                              },
-                            ),
-                          ),
-                          Container(
+                    Container(
                       width: 2.0,
                     ),
-                          Expanded(
-                            child: RaisedButton(
-                              color: Colors.blue,
-                              splashColor: Colors.red,
-                              shape: BeveledRectangleBorder(),
-                              child: Text('Reset'),
-                              onPressed: (){
-                                _name.text = '';
-                                _date.text = '';
-                                _amount.text = '';
-                                _description.text = '';
-                                _selected = _option[0];
-                              },
-                            ),
-                          ),
-                        ],
+                    Expanded(
+                      child: RaisedButton(
+                        color: Colors.blue,
+                        splashColor: Colors.red,
+                        shape: BeveledRectangleBorder(),
+                        child: Text('Reset'),
+                        onPressed: () {
+                          _name.text = '';
+                          _date.text = '';
+                          _amount.text = '';
+                          _description.text = '';
+                          getSelectedOption();
+                        },
                       ),
-                    )
+                    ),
+                  ],
+                ),
+              )
             ]),
           )),
     );
