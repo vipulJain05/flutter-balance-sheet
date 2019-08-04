@@ -236,104 +236,7 @@ class _ProfitState extends State<Profit> {
     });
   }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//         margin: EdgeInsets.only(top: 18.0),
-//         child: Column(children: <Widget>[
-//           Row(
-//             children: <Widget>[
-//               Expanded(
-//                 child: DateTimePickerFormField(
-//                   controller: _dateFrom,
-//                   inputType: inputType,
-//                   format: formats[inputType],
-//                   editable: editable,
-//                   decoration: InputDecoration(
-//                     labelText: 'Date',
-//                     hasFloatingPlaceholder: false,
-//                     errorStyle: TextStyle(
-//                       color: Colors.red,
-//                       fontSize: 10.0,
-//                     ),
-//                     border: OutlineInputBorder(
-//                         borderRadius: BorderRadius.circular(5.0)),
-//                   ),
-//                   onChanged: (dt) => setState(() => date = dt),
-//                 ),
-//               ),
-//               Expanded(
-//                 child: DateTimePickerFormField(
-//                   controller: _dateTo,
-//                   inputType: inputType,
-//                   format: formats[inputType],
-//                   editable: editable,
-//                   decoration: InputDecoration(
-//                     labelText: 'Date',
-//                     hasFloatingPlaceholder: false,
-//                     errorStyle: TextStyle(
-//                       color: Colors.red,
-//                       fontSize: 10.0,
-//                     ),
-//                     border: OutlineInputBorder(
-//                         borderRadius: BorderRadius.circular(5.0)),
-//                   ),
-//                   onChanged: (dt) => setState(() => date = dt),
-//                 ),
-//               ),
-//               Expanded(
-//                 child: RaisedButton(
-//                   child: Text('CHECK'),
-//                   onPressed: () {
-//                     //
-//                   },
-//                 ),
-//               ),
-//             ],
-//           ),
-// //          Row(
-// //            children: <Widget>[],
-// //          ),
-// //          Row(
-// //            children: <Widget>[
-// //              Expanded(
-// //                child: Text(
-// //                  'Month',
-// //                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-// //                ),
-// //              ),
-// //              // Padding(
-// //
-// //              // ),
-// //              Expanded(
-// //                child: Text(
-// //                  'Product',
-// //                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-// //                ),
-// //              ),
-// //              Expanded(
-// //                child: Text(
-// //                  'Expense',
-// //                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-// //                ),
-// //              ),
-// //              Expanded(
-// //                child: Text(
-// //                  'Revenue',
-// //                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-// //                ),
-// //              ),
-// //              Expanded(
-// //                child: Text(
-// //                  'Profit',
-// //                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-// //                ),
-// //              ),
-// //            ],
-// //          ),
-//           Expanded(flex: 1, child: _data()),
-//         ]));
-//   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -350,13 +253,13 @@ class _ProfitState extends State<Profit> {
           itemBuilder: (BuildContext context, int item) {
             return GestureDetector(
               child: Card(
-                margin: EdgeInsets.only(top: 5.0),
+                margin: EdgeInsets.only(top: 5.0,left: 10.0),
                 child: Column(
                   children: <Widget>[
                     Text(
                       _profitLoss.documents[item].data['Year'],
                       style: TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.bold),
+                          fontSize: MediaQuery.of(context).size.width / 18, fontWeight: FontWeight.bold),
                     ),
                     Row(
                       children: <Widget>[
@@ -364,21 +267,21 @@ class _ProfitState extends State<Profit> {
                           child: Text(
                             "Revenue",
                             style: TextStyle(
-                                fontSize: 15.0, fontWeight: FontWeight.bold),
+                                fontSize: MediaQuery.of(context).size.width / 23, fontWeight: FontWeight.bold),
                           ),
                         ),
                         Expanded(
                           child: Text(
                             "Expense",
                             style: TextStyle(
-                                fontSize: 15.0, fontWeight: FontWeight.bold),
+                                fontSize: MediaQuery.of(context).size.width / 23, fontWeight: FontWeight.bold),
                           ),
                         ),
                         Expanded(
                           child: Text(
                             "profit",
                             style: TextStyle(
-                                fontSize: 15.0, fontWeight: FontWeight.bold),
+                                fontSize: MediaQuery.of(context).size.width / 23, fontWeight: FontWeight.bold),
                           ),
                         ),
                       ],
@@ -389,21 +292,21 @@ class _ProfitState extends State<Profit> {
                           child: Text(
                             _profitLoss.documents[item].data['TotalRevenue']
                                 .toString(),
-                            style: TextStyle(fontSize: 15.0),
+                            style: TextStyle(fontSize: MediaQuery.of(context).size.width / 23),
                           ),
                         ),
                         Expanded(
                           child: Text(
                             _profitLoss.documents[item].data['TotalExpense']
                                 .toString(),
-                            style: TextStyle(fontSize: 15.0),
+                            style: TextStyle(fontSize: MediaQuery.of(context).size.width / 23),
                           ),
                         ),
                         Expanded(
                           child: Text(
                             _profitLoss.documents[item].data['Total']
                                 .toString(),
-                            style: TextStyle(fontSize: 15.0),
+                            style: TextStyle(fontSize: MediaQuery.of(context).size.width / 23),
                           ),
                         ),
                       ],
@@ -425,7 +328,7 @@ class _ProfitState extends State<Profit> {
       return Center(
         child: Text(
           "PLEASE WAIT",
-          style: TextStyle(fontSize: 20.0),
+          style: TextStyle(fontSize: MediaQuery.of(context).size.width / 18),
         ),
       );
     }

@@ -13,6 +13,7 @@ class _ExpenseState extends State<Expense> {
   var flag = 0;
   var deletedItem;
   QuerySnapshot expenditure;
+  // var size = MediaQuery.of(context).size.width / 6;
   // StreamSubscription<DocumentSnapshot> subscription;
   CrudServices services = CrudServices();
   // final DocumentReference documentReference = Firestore.instance.document('Expenditure');
@@ -41,8 +42,9 @@ class _ExpenseState extends State<Expense> {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width / 18;
     return Container(
-      margin: EdgeInsets.only(top: 20.0),
+      margin: EdgeInsets.only(top: 20.0,left: 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
@@ -51,7 +53,7 @@ class _ExpenseState extends State<Expense> {
               Expanded(
                 child: Text(
                   'Name',
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: width, fontWeight: FontWeight.bold),
                 ),
               ),
               // Padding(
@@ -60,19 +62,19 @@ class _ExpenseState extends State<Expense> {
               Expanded(
                 child: Text(
                   'Date',
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: width, fontWeight: FontWeight.bold),
                 ),
               ),
               Expanded(
                 child: Text(
                   'Amount',
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: width, fontWeight: FontWeight.bold),
                 ),
               ),
               Expanded(
                 child: Text(
                   'Desc',
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: width, fontWeight: FontWeight.bold),
                 ),
               ),
             ],
@@ -98,20 +100,20 @@ class _ExpenseState extends State<Expense> {
                     Expanded(
                       child: Text(
                         expenditure.documents[item].data['name'],
-                        style: TextStyle(color: Colors.black, fontSize: 15.0),
+                        style: TextStyle(color: Colors.black, fontSize: MediaQuery.of(context).size.width / 23),
                       ),
                     ),
                     Expanded(
                       child: Text(
                         expenditure.documents[item].data['date'].toString(),
-                        style: TextStyle(color: Colors.black, fontSize: 15.0),
+                        style: TextStyle(color: Colors.black, fontSize: MediaQuery.of(context).size.width / 23),
                       ),
                       flex: 2,
                     ),
                     Expanded(
                       child: Text(
                         expenditure.documents[item].data['amount'],
-                        style: TextStyle(color: Colors.black, fontSize: 15.0),
+                        style: TextStyle(color: Colors.black, fontSize: MediaQuery.of(context).size.width / 23),
                       ),
                     ),
                     Expanded(
@@ -151,7 +153,7 @@ class _ExpenseState extends State<Expense> {
           });
     } else {
       return Center(
-        child: Text("Please wait ... ", style: TextStyle(fontSize: 20.0)),
+        child: Text("Please wait ... ", style: TextStyle(fontSize: MediaQuery.of(context).size.width /18)),
       );
     }
   }

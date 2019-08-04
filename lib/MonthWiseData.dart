@@ -57,26 +57,26 @@ class _MonthDataState extends State<MonthData> {
                 Expanded(
                   child: Text(
                     'Month',
-                    style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: MediaQuery.of(context).size.width / 20, fontWeight: FontWeight.bold),
                   ),
                 ),
                 
                 Expanded(
                   child: Text(
                     'Revenue',
-                    style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: MediaQuery.of(context).size.width / 20, fontWeight: FontWeight.bold),
                   ),
                 ),
                 Expanded(
                   child: Text(
                     'Expense',
-                    style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: MediaQuery.of(context).size.width / 20, fontWeight: FontWeight.bold),
                   ),
                 ),
                 Expanded(
                   child: Text(
                     'Profit',
-                    style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: MediaQuery.of(context).size.width / 20, fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
